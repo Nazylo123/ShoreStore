@@ -1,0 +1,28 @@
+@model IEnumerable<ShoeStore.Client.Models.ProductViewModel>
+@{
+    ViewData["Title"] = "Kho hàng";
+}
+<h2 class="mb-4">Kho hàng</h2>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Tên sản phẩm</th>
+            <th>Thương hiệu</th>
+            <th>Danh mục</th>
+            <th>Số lượng tồn</th>
+            <th>Trạng thái</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.BrandName</td>
+                <td>@item.CategoryName</td>
+                <td>@item.TotalStock</td>
+                <td>@(item.IsActive ? "Hiện" : "Ẩn")</td>
+            </tr>
+        }
+    </tbody>
+</table> 

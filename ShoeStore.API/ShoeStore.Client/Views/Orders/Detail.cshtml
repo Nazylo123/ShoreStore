@@ -1,0 +1,44 @@
+@model ShoeStore.Client.Models.OrderViewModel
+@{
+    ViewData["Title"] = "Chi tiết đơn hàng";
+}
+<div class="container py-5">
+    <h2 class="mb-4"><i class="fas fa-file-invoice me-2"></i>Chi tiết đơn hàng #@Model.Id</h2>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Thông tin đơn hàng</h5>
+                    <p><strong>Khách hàng:</strong> @Model.CustomerName</p>
+                    <p><strong>Số điện thoại:</strong> @Model.Phone</p>
+                    <p><strong>Địa chỉ giao hàng:</strong> @Model.Address</p>
+                    <p><strong>Ngày đặt:</strong> @Model.FormattedOrderDate</p>
+                    <p><strong>Trạng thái:</strong> @Model.Status</p>
+                    <p><strong>Tổng tiền:</strong> <span class="fw-bold">@Model.FormattedTotalAmount</span></p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card mb-4">
+                <div class="card-body">
+                    <h5 class="card-title">Sản phẩm trong đơn</h5>
+                    <ul class="list-group">
+                        @foreach (var item in Model.Items)
+                        {
+                            <li class="list-group-item d-flex align-items-center">
+                                <img src="@item.ProductImage" alt="@item.ProductName" style="width: 60px; height: 60px; object-fit: cover;" class="me-3 rounded">
+                                <div class="flex-grow-1">
+                                    <div>@item.ProductName</div>
+                                    <div class="text-muted">Size: @item.Size</div>
+                                    <div class="text-muted">x @item.Quantity</div>
+                                </div>
+                                <div class="fw-bold">@item.FormattedTotalPrice</div>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <a href="@Url.Action("MyOrders", "Orders")" class="btn btn-secondary"><i class="fas fa-arrow-left me-1"></i>Quay lại danh sách</a>
+</div> 

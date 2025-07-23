@@ -1,0 +1,99 @@
+@model ShoeStore.Client.Models.ProductViewModel
+@{
+    ViewData["Title"] = "Sửa sản phẩm";
+}
+<h2 class="mb-4">Sửa sản phẩm</h2>
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+    <div class="mb-3">
+        <label asp-for="Name" class="form-label">Tên sản phẩm</label>
+        <input asp-for="Name" class="form-control" placeholder="Nhập tên sản phẩm" />
+        <span asp-validation-for="Name" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Description" class="form-label">Mô tả</label>
+        <textarea asp-for="Description" class="form-control" rows="3" placeholder="Nhập mô tả sản phẩm"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="Price" class="form-label">Giá (VNĐ)</label>
+        <input asp-for="Price" class="form-control" placeholder="Nhập giá sản phẩm" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label class="form-label">Các size và số lượng tồn kho</label>
+        <div id="variantsContainer">
+            @for (int i = 0; i < Model.Variants.Count; i++)
+            {
+                <div class="row mb-2 variant-row align-items-center">
+                    <div class="col-5">
+                        <input type="number" name="Variants[@i].Size" class="form-control form-control-sm" value="@Model.Variants[i].Size" placeholder="Size (VD: 40)" min="30" max="50" required />
+                    </div>
+                    <div class="col-5">
+                        <input type="number" name="Variants[@i].Stock" class="form-control form-control-sm" value="@Model.Variants[i].Stock" placeholder="Số lượng" min="0" required />
+                    </div>
+                    <div class="col-2 d-flex justify-content-center">
+                        <button type="button" class="btn btn-outline-danger btn-sm btn-remove-variant" title="Xóa size" onclick="removeVariantRow(this)"><i class="fas fa-times"></i></button>
+                    </div>
+                </div>
+            }
+        </div>
+        <button type="button" class="btn btn-outline-primary btn-sm mt-2" id="addVariantBtn"><i class="fas fa-plus"></i> Thêm size</button>
+    </div>
+    <div class="mb-3">
+        <label asp-for="BrandId" class="form-label">Thương hiệu</label>
+        <select asp-for="BrandId" class="form-select" asp-items="ViewBag.Brands">
+            <option value="">Chọn thương hiệu</option>
+        </select>
+        <span asp-validation-for="BrandId" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="CategoryId" class="form-label">Danh mục</label>
+        <select asp-for="CategoryId" class="form-select" asp-items="ViewBag.Categories">
+            <option value="">Chọn danh mục</option>
+        </select>
+        <span asp-validation-for="CategoryId" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="ImageUrl" class="form-label">URL hình ảnh</label>
+        <input asp-for="ImageUrl" class="form-control" placeholder="Nhập URL hình ảnh sản phẩm" />
+        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+    </div>
+    <div class="mb-3">
+        <label asp-for="IsActive" class="form-label">Trạng thái</label>
+        <select asp-for="IsActive" class="form-select">
+            <option value="true">Hiện</option>
+            <option value="false">Ẩn</option>
+        </select>
+        <span asp-validation-for="IsActive" class="text-danger"></span>
+    </div>
+    <button type="submit" class="btn btn-primary">Lưu thay đổi</button>
+    <a asp-action="Index" class="btn btn-secondary">Quay lại</a>
+</form>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        let variantIndex = @Model.Variants.Count;
+        document.getElementById('addVariantBtn').onclick = function() {
+            const container = document.getElementById('variantsContainer');
+            const row = document.createElement('div');
+            row.className = 'row mb-2 variant-row align-items-center';
+            row.innerHTML = `
+                <div class="col-5">
+                    <input type="number" name="Variants[${variantIndex}].Size" class="form-control form-control-sm" placeholder="Size (VD: 40)" min="30" max="50" required />
+                </div>
+                <div class="col-5">
+                    <input type="number" name="Variants[${variantIndex}].Stock" class="form-control form-control-sm" placeholder="Số lượng" min="0" required />
+                </div>
+                <div class="col-2 d-flex justify-content-center">
+                    <button type="button" class="btn btn-outline-danger btn-sm btn-remove-variant" title="Xóa size" onclick="removeVariantRow(this)"><i class="fas fa-times"></i></button>
+                </div>
+            `;
+            container.appendChild(row);
+            variantIndex++;
+        };
+        window.removeVariantRow = function(btn) {
+            btn.closest('.variant-row').remove();
+        };
+    </script>
+} 

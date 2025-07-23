@@ -1,0 +1,201 @@
+@model ShoeStore.Client.Models.ProductListViewModel
+@{
+    ViewData["Title"] = "Sản phẩm";
+}
+
+<div class="container py-4">
+    <!-- Page Header -->
+    <div class="row mb-4">
+        <div class="col-md-8">
+            <h1 class="h3">
+                <i class="fas fa-shopping-bag me-2"></i>Sản phẩm
+            </h1>
+            <p class="text-muted">Tìm thấy @Model.TotalItems sản phẩm</p>
+        </div>
+        <div class="col-md-4 text-end">
+            <div class="dropdown">
+                <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
+                    <i class="fas fa-sort me-1"></i>Sắp xếp
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a class="dropdown-item" href="@Url.Action("Index", new { sortBy = "newest", searchTerm = Model.SearchTerm, categoryId = Model.CategoryId, brandId = Model.BrandId })">Mới nhất</a></li>
+                    <li><a class="dropdown-item" href="@Url.Action("Index", new { sortBy = "price_asc", searchTerm = Model.SearchTerm, categoryId = Model.CategoryId, brandId = Model.BrandId })">Giá tăng dần</a></li>
+                    <li><a class="dropdown-item" href="@Url.Action("Index", new { sortBy = "price_desc", searchTerm = Model.SearchTerm, categoryId = Model.CategoryId, brandId = Model.BrandId })">Giá giảm dần</a></li>
+                    <li><a class="dropdown-item" href="@Url.Action("Index", new { sortBy = "name_asc", searchTerm = Model.SearchTerm, categoryId = Model.CategoryId, brandId = Model.BrandId })">Tên A-Z</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <!-- Filters Sidebar -->
+        <div class="col-lg-3">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0"><i class="fas fa-filter me-2"></i>Bộ lọc</h5>
+                </div>
+                <div class="card-body">
+                    <!-- Search -->
+                    <form method="get" action="@Url.Action("Index")">
+                        <div class="mb-3">
+                            <label class="form-label">Tìm kiếm</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" name="searchTerm" value="@Model.SearchTerm" placeholder="Tên sản phẩm...">
+                                <button class="btn btn-outline-secondary" type="submit">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Category Filter -->
+                        <div class="mb-3">
+                            <label class="form-label">Danh mục</label>
+                            <select class="form-select" name="categoryId" onchange="this.form.submit()">
+                                <option value="">Tất cả danh mục</option>
+                                @if (ViewBag.Categories != null)
+                                {
+                                    foreach (var category in ViewBag.Categories)
+                                    {
+                                        if (Model.CategoryId == category.Id)
+                                        {
+                                            <option value="@category.Id" selected>@category.Name</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@category.Id">@category.Name</option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+
+                        <!-- Brand Filter -->
+                        <div class="mb-3">
+                            <label class="form-label">Thương hiệu</label>
+                            <select class="form-select" name="brandId" onchange="this.form.submit()">
+                                <option value="">Tất cả thương hiệu</option>
+                                @if (ViewBag.Brands != null)
+                                {
+                                    foreach (var brand in ViewBag.Brands)
+                                    {
+                                        if (Model.BrandId == brand.Id)
+                                        {
+                                            <option value="@brand.Id" selected>@brand.Name</option>
+                                        }
+                                        else
+                                        {
+                                            <option value="@brand.Id">@brand.Name</option>
+                                        }
+                                    }
+                                }
+                            </select>
+                        </div>
+
+                        <!-- Clear Filters -->
+                        @if (!string.IsNullOrEmpty(Model.SearchTerm) || Model.CategoryId.HasValue || Model.BrandId.HasValue)
+                        {
+                            <div class="d-grid">
+                                <a href="@Url.Action("Index")" class="btn btn-outline-secondary">
+                                    <i class="fas fa-times me-1"></i>Xóa bộ lọc
+                                </a>
+                            </div>
+                        }
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Products Grid -->
+        <div class="col-lg-9">
+            @if (Model.Products.Any())
+            {
+                <div class="row">
+                    @foreach (var product in Model.Products)
+                    {
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="card h-100 shadow-sm product-card">
+                                <img src="@(string.IsNullOrEmpty(product.ImageUrl) ? "/images/default-shoe.jpg" : product.ImageUrl)" class="card-img-top img-fluid" alt="@product.Name" style="width: 100%; height: 200px; object-fit: cover;">
+                                <div class="card-body d-flex flex-column">
+                                    <h6 class="card-title">@product.Name</h6>
+                                    <p class="card-text text-muted small">
+                                        <i class="fas fa-tag me-1"></i>@product.BrandName
+                                    </p>
+                                    <p class="card-text text-muted small">
+                                        <i class="fas fa-th-large me-1"></i>@product.CategoryName
+                                    </p>
+                                    <div class="mt-auto">
+                                        <p class="card-text fw-bold text-primary fs-5">@product.FormattedPrice</p>
+                                        <div class="d-grid gap-2">
+                                            <a href="@Url.Action("Details", new { id = product.Id })" class="btn btn-outline-primary btn-sm">
+                                                <i class="fas fa-eye me-1"></i>Chi tiết
+                                            </a>
+                                            <button class="btn btn-primary btn-sm add-to-cart-btn" data-product-id="@product.Id">
+                                                <i class="fas fa-cart-plus me-1"></i>Thêm vào giỏ
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+
+                <!-- Pagination -->
+                @if (Model.TotalPages > 1)
+                {
+                    <nav aria-label="Product pagination">
+                        <ul class="pagination justify-content-center">
+                            @if (Model.CurrentPage > 1)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" href="@Url.Action("Index", new { page = Model.CurrentPage - 1, searchTerm = Model.SearchTerm, categoryId = Model.CategoryId, brandId = Model.BrandId, sortBy = Model.SortBy })">
+                                        <i class="fas fa-chevron-left"></i>
+                                    </a>
+                                </li>
+                            }
+
+                            @for (int i = Math.Max(1, Model.CurrentPage - 2); i <= Math.Min(Model.TotalPages, Model.CurrentPage + 2); i++)
+                            {
+                                <li class="page-item @(i == Model.CurrentPage ? "active" : "")">
+                                    <a class="page-link" href="@Url.Action("Index", new { page = i, searchTerm = Model.SearchTerm, categoryId = Model.CategoryId, brandId = Model.BrandId, sortBy = Model.SortBy })">@i</a>
+                                </li>
+                            }
+
+                            @if (Model.CurrentPage < Model.TotalPages)
+                            {
+                                <li class="page-item">
+                                    <a class="page-link" href="@Url.Action("Index", new { page = Model.CurrentPage + 1, searchTerm = Model.SearchTerm, categoryId = Model.CategoryId, brandId = Model.BrandId, sortBy = Model.SortBy })">
+                                        <i class="fas fa-chevron-right"></i>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    </nav>
+                }
+            }
+            else
+            {
+                <div class="text-center py-5">
+                    <i class="fas fa-search fa-3x text-muted mb-3"></i>
+                    <h4 class="text-muted">Không tìm thấy sản phẩm</h4>
+                    <p class="text-muted">Hãy thử thay đổi bộ lọc hoặc từ khóa tìm kiếm</p>
+                    <a href="@Url.Action("Index")" class="btn btn-primary">
+                        <i class="fas fa-undo me-1"></i>Xem tất cả sản phẩm
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Add to cart functionality
+            $('.add-to-cart-btn').click(function() {
+                var productId = $(this).data('product-id');
+                window.location.href = '/Products/Details/' + productId;
+            });
+        });
+    </script>
+} 

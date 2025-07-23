@@ -1,0 +1,149 @@
+@{
+    ViewData["Title"] = "Dashboard";
+    var overview = ViewBag.Overview != null ? System.Text.Json.JsonSerializer.Deserialize<Dictionary<string, System.Text.Json.JsonElement>>(ViewBag.Overview) : null;
+    var revenue = ViewBag.Revenue != null ? System.Text.Json.JsonSerializer.Deserialize<dynamic>(ViewBag.Revenue) : null;
+    var orders = ViewBag.Orders != null ? System.Text.Json.JsonSerializer.Deserialize<dynamic>(ViewBag.Orders) : null;
+    var topProducts = ViewBag.TopProducts != null ? System.Text.Json.JsonSerializer.Deserialize<dynamic>(ViewBag.TopProducts) : null;
+}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<div class="container mt-4">
+    <h2>Admin Dashboard</h2>
+    <form method="get" class="row g-3 mb-4">
+        <div class="col-auto">
+            <label for="from" class="form-label">Từ ngày</label>
+            <input type="date" class="form-control" id="from" name="from" value="@ViewBag.From" />
+        </div>
+        <div class="col-auto">
+            <label for="to" class="form-label">Đến ngày</label>
+            <input type="date" class="form-control" id="to" name="to" value="@ViewBag.To" />
+        </div>
+        <div class="col-auto">
+            <label for="status" class="form-label">Trạng thái đơn</label>
+            <select class="form-select" id="status" name="status">
+                @Html.Raw($"<option value=\"\"{(string.IsNullOrEmpty(ViewBag.Status)?" selected":"")}>Tất cả</option>")
+                @Html.Raw($"<option value=\"Pending\"{(ViewBag.Status=="Pending"? " selected":"")}>Pending</option>")
+                @Html.Raw($"<option value=\"Processing\"{(ViewBag.Status=="Processing"? " selected":"")}>Processing</option>")
+                @Html.Raw($"<option value=\"Shipped\"{(ViewBag.Status=="Shipped"? " selected":"")}>Shipped</option>")
+                @Html.Raw($"<option value=\"Delivered\"{(ViewBag.Status=="Delivered"? " selected":"")}>Delivered</option>")
+                @Html.Raw($"<option value=\"Cancelled\"{(ViewBag.Status=="Cancelled"? " selected":"")}>Cancelled</option>")
+            </select>
+        </div>
+        <div class="col-auto align-self-end">
+            <button type="submit" class="btn btn-primary">Lọc</button>
+        </div>
+    </form>
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card text-bg-success mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Tổng doanh thu</h5>
+                    <p class="card-text fs-4">@(overview != null && overview.ContainsKey("totalRevenue") ? ((decimal)overview["totalRevenue"].GetDouble()).ToString("N0") : "0")</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-bg-info mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Tổng số đơn</h5>
+                    <p class="card-text fs-4">@(overview != null && overview.ContainsKey("totalOrders") ? overview["totalOrders"].ToString() : "0")</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-bg-warning mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Sản phẩm đã bán</h5>
+                    <p class="card-text fs-4">@(overview != null && overview.ContainsKey("totalProductsSold") ? overview["totalProductsSold"].ToString() : "0")</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card text-bg-secondary mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">Khách hàng</h5>
+                    <p class="card-text fs-4">@(overview != null && overview.ContainsKey("totalCustomers") ? overview["totalCustomers"].ToString() : "0")</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">Biểu đồ doanh thu</div>
+                <div class="card-body">
+                    <canvas id="revenueChart"></canvas>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-header">Biểu đồ số đơn hàng</div>
+                <div class="card-body">
+                    <canvas id="orderChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12 mb-4">
+            <div class="card">
+                <div class="card-header">Top sản phẩm bán chạy</div>
+                <div class="card-body">
+                    <canvas id="topProductsChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    // Parse data from ViewBag
+    const revenueData = @Html.Raw(ViewBag.Revenue ?? "[]");
+    const orderData = @Html.Raw(ViewBag.Orders ?? "[]");
+    const topProductsData = @Html.Raw(ViewBag.TopProducts ?? "[]");
+
+    // Revenue Chart
+    const revenueLabels = revenueData.map(x => x.date ? x.date.substring(0, 10) : "");
+    const revenueValues = revenueData.map(x => x.revenue ?? 0);
+    new Chart(document.getElementById('revenueChart'), {
+        type: 'line',
+        data: {
+            labels: revenueLabels,
+            datasets: [{
+                label: 'Doanh thu',
+                data: revenueValues,
+                borderColor: 'green',
+                backgroundColor: 'rgba(0,128,0,0.1)',
+                fill: true
+            }]
+        }
+    });
+    // Order Chart
+    const orderLabels = orderData.map(x => x.date ? x.date.substring(0, 10) : "");
+    const orderValues = orderData.map(x => x.orders ?? 0);
+    new Chart(document.getElementById('orderChart'), {
+        type: 'bar',
+        data: {
+            labels: orderLabels,
+            datasets: [{
+                label: 'Số đơn',
+                data: orderValues,
+                backgroundColor: 'rgba(0,123,255,0.5)'
+            }]
+        }
+    });
+    // Top Products Chart
+    const topLabels = topProductsData.map(x => x.productName ?? x.productId);
+    const topValues = topProductsData.map(x => x.quantity ?? 0);
+    new Chart(document.getElementById('topProductsChart'), {
+        type: 'bar',
+        data: {
+            labels: topLabels,
+            datasets: [{
+                label: 'Số lượng bán',
+                data: topValues,
+                backgroundColor: 'rgba(255,193,7,0.7)'
+            }]
+        }
+    });
+</script> 

@@ -1,0 +1,29 @@
+@model ShoeStore.Client.Models.OrderViewModel
+@{
+    ViewData["Title"] = "Đặt hàng thành công";
+}
+<div class="container py-5 text-center">
+    <h2 class="text-success mb-4"><i class="fas fa-check-circle me-2"></i>Đặt hàng thành công!</h2>
+    <p>Cảm ơn bạn đã mua hàng tại ShoeStore. Đơn hàng của bạn đã được ghi nhận.</p>
+    <div class="card mx-auto my-4" style="max-width: 500px;">
+        <div class="card-body">
+            <h5 class="card-title">Thông tin đơn hàng</h5>
+            <p><strong>Khách hàng:</strong> @Model.CustomerName</p>
+            <p><strong>Số điện thoại:</strong> @Model.Phone</p>
+            <p><strong>Địa chỉ giao hàng:</strong> @Model.Address</p>
+            <p><strong>Phương thức thanh toán:</strong> @Model.PaymentMethod</p>
+            <hr />
+            
+            <ul class="list-group mb-3">
+                @foreach (var item in Model.Items)
+                {
+                    <li class="list-group-item d-flex justify-content-between align-items-center">
+                        <span>@item.ProductName (Size: @item.Size) x @item.Quantity</span>
+                        <span class="fw-bold">@item.FormattedTotalPrice</span>
+                    </li>
+                }
+            </ul>
+        </div>
+    </div>
+    <a href="/Products" class="btn btn-primary">Tiếp tục mua sắm</a>
+</div> 

@@ -1,0 +1,30 @@
+@model IEnumerable<ShoeStore.Client.Models.UserViewModel>
+@{
+    ViewData["Title"] = "Quản lý user";
+}
+<h2 class="mb-4">Quản lý user</h2>
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Tên đăng nhập</th>
+            <th>Email</th>
+            <th>Role</th>
+            <th>Họ tên</th>
+            <th>Số điện thoại</th>
+            <th>Địa chỉ</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var user in Model)
+        {
+            <tr>
+                <td>@user.Username</td>
+                <td>@user.Email</td>
+                <td>@user.Role</td>
+                <td>@(user.Customer?.FullName ?? user.FullName)</td>
+                <td>@(user.Customer?.Phone ?? user.Phone)</td>
+                <td>@(user.Customer?.Address ?? user.Address)</td>
+            </tr>
+        }
+    </tbody>
+</table> 

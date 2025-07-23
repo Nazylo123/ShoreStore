@@ -1,0 +1,188 @@
+﻿@{
+    ViewData["Title"] = "Trang chủ";
+}
+
+<!-- Masthead-->
+<header class="masthead">
+    <div class="container">
+        <div class="masthead-subheading">Chào mừng đến với ShoeStore!</div>
+        <div class="masthead-heading text-uppercase">Khám phá bộ sưu tập giày mới nhất</div>
+        <a class="btn btn-primary btn-xl text-uppercase" href="@Url.Action("Index", "Products")">
+            <i class="fas fa-shopping-bag me-2"></i>Mua sắm ngay
+        </a>
+    </div>
+</header>
+
+<!-- Services-->
+<section class="page-section" id="services">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="page-section-heading text-uppercase">Dịch vụ của chúng tôi</h2>
+            <h3 class="page-section-subheading text-muted">Chất lượng cao, dịch vụ tốt nhất</h3>
+        </div>
+        <div class="row text-center">
+            <div class="col-md-4">
+                <span class="fa-stack fa-4x">
+                    <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                    <i class="fas fa-shipping-fast fa-stack-1x fa-inverse"></i>
+                </span>
+                <h4 class="my-3">Giao hàng nhanh</h4>
+                <p class="text-muted">Giao hàng toàn quốc trong 24-48h với dịch vụ chuyên nghiệp</p>
+            </div>
+            <div class="col-md-4">
+                <span class="fa-stack fa-4x">
+                    <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                    <i class="fas fa-shield-alt fa-stack-1x fa-inverse"></i>
+                </span>
+                <h4 class="my-3">Chất lượng đảm bảo</h4>
+                <p class="text-muted">Sản phẩm chính hãng, chất lượng cao với bảo hành chính thức</p>
+            </div>
+            <div class="col-md-4">
+                <span class="fa-stack fa-4x">
+                    <i class="fas fa-circle fa-stack-2x text-primary"></i>
+                    <i class="fas fa-undo fa-stack-1x fa-inverse"></i>
+                </span>
+                <h4 class="my-3">Đổi trả dễ dàng</h4>
+                <p class="text-muted">Đổi trả trong 30 ngày với điều kiện đơn giản và nhanh chóng</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Portfolio Grid-->
+<section class="page-section bg-light" id="portfolio">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="page-section-heading text-uppercase">Sản phẩm nổi bật</h2>
+            <h3 class="page-section-subheading text-muted">Những mẫu giày được yêu thích nhất</h3>
+        </div>
+        <div class="row">
+            @if (ViewBag.FeaturedProducts != null)
+            {
+                foreach (var product in ViewBag.FeaturedProducts)
+                {
+                    <div class="col-lg-4 col-sm-6 mb-4">
+                        <div class="portfolio-item">
+                            <a class="portfolio-link" href="@Url.Action("Details", "Products", new { id = product.Id })">
+                                <div class="portfolio-hover">
+                                    <div class="portfolio-hover-content">
+                                        <i class="fas fa-plus fa-3x"></i>
+                                    </div>
+                                </div>
+                                <img class="img-fluid" src="@(string.IsNullOrEmpty(product.ImageUrl) ? "/images/default-shoe.jpg" : product.ImageUrl)" alt="@product.Name" style="width: 100%; height: 200px; object-fit: cover;" />
+                            </a>
+                            <div class="portfolio-caption">
+                                <div class="portfolio-caption-heading">@product.Name</div>
+                                <div class="portfolio-caption-subheading text-muted">@product.FormattedPrice</div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+        </div>
+        <div class="text-center mt-4">
+            <a class="btn btn-primary btn-xl text-uppercase" href="@Url.Action("Index", "Products")">
+                <i class="fas fa-arrow-right me-2"></i>Xem tất cả sản phẩm
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- About-->
+<section class="page-section" id="about">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="page-section-heading text-uppercase">Về ShoeStore</h2>
+            <p class="lead">ShoeStore là cửa hàng giày uy tín với hơn 10 năm kinh nghiệm, luôn mang đến sản phẩm chất lượng và dịch vụ tận tâm cho khách hàng.</p>
+        </div>
+    </div>
+</section>
+
+<!-- Contact-->
+<section class="page-section" id="contact">
+    <div class="container">
+        <div class="text-center">
+            <h2 class="page-section-heading text-uppercase">Liên hệ với chúng tôi</h2>
+            <h3 class="page-section-subheading text-muted">Hãy để lại tin nhắn cho chúng tôi</h3>
+        </div>
+        <div class="row justify-content-center">
+            <div class="col-lg-8 col-xl-7">
+                <form id="contactForm" data-sb-form-api-token="API_TOKEN">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input class="form-control" id="name" type="text" placeholder="Họ và tên *" data-sb-validations="required" />
+                                <label for="name">Họ và tên *</label>
+                                <div class="invalid-feedback" data-sb-feedback="name:required">Vui lòng nhập họ và tên.</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input class="form-control" id="email" type="email" placeholder="Email *" data-sb-validations="required,email" />
+                                <label for="email">Email *</label>
+                                <div class="invalid-feedback" data-sb-feedback="email:required">Vui lòng nhập email.</div>
+                                <div class="invalid-feedback" data-sb-feedback="email:email">Email không hợp lệ.</div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <input class="form-control" id="phone" type="tel" placeholder="Số điện thoại" />
+                                <label for="phone">Số điện thoại</label>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-floating mb-3">
+                                <select class="form-select" id="subject">
+                                    <option value="">Chọn chủ đề</option>
+                                    <option value="general">Thông tin chung</option>
+                                    <option value="product">Hỏi về sản phẩm</option>
+                                    <option value="order">Đơn hàng</option>
+                                    <option value="support">Hỗ trợ kỹ thuật</option>
+                                </select>
+                                <label for="subject">Chủ đề</label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <div class="form-floating mb-3">
+                                <textarea class="form-control" id="message" type="text" placeholder="Nội dung tin nhắn *" style="height: 10rem" data-sb-validations="required"></textarea>
+                                <label for="message">Nội dung tin nhắn *</label>
+                                <div class="invalid-feedback" data-sb-feedback="message:required">Vui lòng nhập nội dung tin nhắn.</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button class="btn btn-primary btn-xl text-uppercase" id="submitButton" type="submit">
+                            <i class="fas fa-paper-plane me-2"></i>Gửi tin nhắn
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            // Contact form handling
+            $('#contactForm').submit(function(e) {
+                e.preventDefault();
+                
+                // Get form data
+                var formData = {
+                    name: $('#name').val(),
+                    email: $('#email').val(),
+                    phone: $('#phone').val(),
+                    subject: $('#subject').val(),
+                    message: $('#message').val()
+                };
+
+                // Show success message
+                alert('Cảm ơn bạn đã liên hệ với chúng tôi! Chúng tôi sẽ phản hồi trong thời gian sớm nhất.');
+                
+                // Reset form
+                this.reset();
+            });
+        });
+    </script>
+}

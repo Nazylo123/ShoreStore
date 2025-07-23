@@ -1,0 +1,27 @@
+@model ShoeStore.Client.Models.UserProfileViewModel
+@{
+    ViewData["Title"] = "Hồ sơ khách hàng";
+}
+<h2 class="mb-4">Hồ sơ khách hàng</h2>
+<div class="card shadow-lg border-0 mb-4">
+    <div class="card-body p-4">
+        <dl class="row">
+            <dt class="col-sm-3">Tên đăng nhập</dt>
+            <dd class="col-sm-9">@Model.Username</dd>
+            <dt class="col-sm-3">Email</dt>
+            <dd class="col-sm-9">@Model.Email</dd>
+            <dt class="col-sm-3">Role</dt>
+            <dd class="col-sm-9">@Model.Role</dd>
+            @if (Model.Customer != null)
+            {
+                <dt class="col-sm-3">Họ tên</dt>
+                <dd class="col-sm-9">@Model.Customer.FullName</dd>
+                <dt class="col-sm-3">Số điện thoại</dt>
+                <dd class="col-sm-9">@Model.Customer.Phone</dd>
+                <dt class="col-sm-3">Địa chỉ</dt>
+                <dd class="col-sm-9">@Model.Customer.Address</dd>
+            }
+        </dl>
+    </div>
+</div>
+<a class="btn btn-secondary" href="@Url.Action("Index", "Home")">Về trang chủ</a> 

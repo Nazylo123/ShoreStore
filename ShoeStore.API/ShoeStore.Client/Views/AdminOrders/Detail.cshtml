@@ -1,0 +1,71 @@
+@model ShoeStore.Client.Models.OrderViewModel
+@{
+    ViewData["Title"] = "Chi tiết đơn hàng";
+    var statusList = new[] { "Pending", "Processing", "Shipped", "Delivered", "Cancelled" };
+    var optionsHtml = "";
+    foreach (var s in statusList)
+    {
+        var selected = Model.Status == s ? " selected" : "";
+        optionsHtml += $"<option value=\"{s}\"{selected}>{s}</option>";
+    }
+}
+<h2 class="mb-4">Chi tiết đơn hàng #@Model.Id</h2>
+@if (TempData["ErrorMessage"] != null)
+{
+    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
+}
+<div class="card mb-4">
+    <div class="card-body">
+        <h5 class="card-title">Thông tin đơn hàng</h5>
+        <p><strong>Khách hàng:</strong> @Model.CustomerName</p>
+        <p><strong>Số điện thoại:</strong> @Model.Phone</p>
+        <p><strong>Địa chỉ giao hàng:</strong> @Model.Address</p>
+        <p><strong>Ngày đặt:</strong> @Model.OrderDate.ToString("dd/MM/yyyy HH:mm")</p>
+        <form action="@Url.Action("UpdateStatus", "AdminOrders")" method="post" class="row g-2 align-items-center">
+            <input type="hidden" name="id" value="@Model.Id" />
+            <div class="col-auto">
+                <label for="status" class="col-form-label"><strong>Trạng thái:</strong></label>
+            </div>
+            <div class="col-auto">
+                <select name="status" id="status" class="form-select form-select-sm">
+                    @Html.Raw(optionsHtml)
+                </select>
+            </div>
+            <div class="col-auto">
+                <button type="submit" class="btn btn-primary btn-sm">Cập nhật</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="card">
+    <div class="card-body">
+        <h5 class="card-title">Sản phẩm trong đơn</h5>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Tên sản phẩm</th>
+                    <th>Size</th>
+                    <th>Số lượng</th>
+                    <th>Đơn giá</th>
+                    <th>Thành tiền</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Items)
+                {
+                    <tr>
+                        <td>@item.ProductName</td>
+                        <td>@item.Size</td>
+                        <td>@item.Quantity</td>
+                        <td>@item.Price.ToString("N0") VNĐ</td>
+                        <td>@(item.Price * item.Quantity) VNĐ</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+        <div class="text-end">
+            <strong>Tổng tiền: @Model.TotalAmount.ToString("N0") VNĐ</strong>
+        </div>
+    </div>
+</div>
+<a asp-action="Index" class="btn btn-secondary mt-3">Quay lại danh sách</a> 

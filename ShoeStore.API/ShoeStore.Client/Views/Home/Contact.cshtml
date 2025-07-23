@@ -1,0 +1,208 @@
+@{
+    ViewData["Title"] = "Liên hệ";
+}
+
+<div class="container py-4">
+    <h1 class="h3 mb-4 text-center">
+        <i class="fas fa-envelope me-2"></i>Liên hệ với chúng tôi
+    </h1>
+
+    <div class="row">
+        <!-- Contact Information -->
+        <div class="col-lg-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-info-circle me-2"></i>Thông tin liên hệ
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-3">
+                        <h6><i class="fas fa-map-marker-alt text-primary me-2"></i>Địa chỉ</h6>
+                        <p class="text-muted">123 Đường ABC, Phường XYZ, Quận 1, TP.HCM</p>
+                    </div>
+                    <div class="mb-3">
+                        <h6><i class="fas fa-phone text-primary me-2"></i>Điện thoại</h6>
+                        <p class="text-muted">0123 456 789</p>
+                    </div>
+                    <div class="mb-3">
+                        <h6><i class="fas fa-envelope text-primary me-2"></i>Email</h6>
+                        <p class="text-muted">info@shoestore.com</p>
+                    </div>
+                    <div class="mb-3">
+                        <h6><i class="fas fa-clock text-primary me-2"></i>Giờ làm việc</h6>
+                        <p class="text-muted">Thứ 2 - Chủ nhật: 8:00 - 22:00</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Social Media -->
+            <div class="card shadow-sm mt-3">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-share-alt me-2"></i>Theo dõi chúng tôi
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="d-flex justify-content-around">
+                        <a href="#" class="text-primary fs-4">
+                            <i class="fab fa-facebook"></i>
+                        </a>
+                        <a href="#" class="text-info fs-4">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-danger fs-4">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-success fs-4">
+                            <i class="fab fa-youtube"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-paper-plane me-2"></i>Gửi tin nhắn cho chúng tôi
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <form id="contactForm">
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="firstName" class="form-label">Họ và tên *</label>
+                                <input type="text" class="form-control" id="firstName" name="firstName" required>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="email" class="form-label">Email *</label>
+                                <input type="email" class="form-control" id="email" name="email" required>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="phone" class="form-label">Số điện thoại</label>
+                                <input type="tel" class="form-control" id="phone" name="phone">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="subject" class="form-label">Chủ đề *</label>
+                                <select class="form-select" id="subject" name="subject" required>
+                                    <option value="">Chọn chủ đề</option>
+                                    <option value="general">Thông tin chung</option>
+                                    <option value="product">Hỏi về sản phẩm</option>
+                                    <option value="order">Đơn hàng</option>
+                                    <option value="support">Hỗ trợ kỹ thuật</option>
+                                    <option value="feedback">Góp ý</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message" class="form-label">Nội dung tin nhắn *</label>
+                            <textarea class="form-control" id="message" name="message" rows="5" required 
+                                      placeholder="Vui lòng nhập nội dung tin nhắn của bạn..."></textarea>
+                        </div>
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-paper-plane me-2"></i>Gửi tin nhắn
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Map Section -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="fas fa-map me-2"></i>Bản đồ
+                    </h5>
+                </div>
+                <div class="card-body p-0">
+                    <div class="ratio ratio-21x9">
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3919.424098981303!2d106.6983153148008!3d10.776888992319!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31752f46f64b933f%3A0xf8a6e5b2a5a4f1f4!2zVHLGsOG7nW5nIMSQ4bqhaSBo4buNYyBDw7RuZyBuZ2jhu4cgVGjDtG5nIHRpbiB2aWV0!5e0!3m2!1svi!2s!4v1620000000000!5m2!1svi!2s" 
+                                style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- FAQ Section -->
+    <div class="row mt-5">
+        <div class="col-12">
+            <h3 class="text-center mb-4">
+                <i class="fas fa-question-circle me-2"></i>Câu hỏi thường gặp
+            </h3>
+            <div class="accordion" id="faqAccordion">
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq1">
+                        <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#collapse1">
+                            Làm thế nào để đặt hàng online?
+                        </button>
+                    </h2>
+                    <div id="collapse1" class="accordion-collapse collapse show" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Bạn có thể đặt hàng online bằng cách chọn sản phẩm, thêm vào giỏ hàng và thanh toán. Chúng tôi sẽ giao hàng trong 24-48h.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq2">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse2">
+                            Chính sách đổi trả như thế nào?
+                        </button>
+                    </h2>
+                    <div id="collapse2" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Chúng tôi chấp nhận đổi trả trong vòng 30 ngày kể từ ngày mua hàng với điều kiện sản phẩm còn nguyên vẹn.
+                        </div>
+                    </div>
+                </div>
+                <div class="accordion-item">
+                    <h2 class="accordion-header" id="faq3">
+                        <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#collapse3">
+                            Phí vận chuyển là bao nhiêu?
+                        </button>
+                    </h2>
+                    <div id="collapse3" class="accordion-collapse collapse" data-bs-parent="#faqAccordion">
+                        <div class="accordion-body">
+                            Phí vận chuyển là 30,000 VNĐ cho đơn hàng dưới 500,000 VNĐ. Miễn phí vận chuyển cho đơn hàng từ 500,000 VNĐ trở lên.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('#contactForm').submit(function(e) {
+                e.preventDefault();
+                
+                // Get form data
+                var formData = {
+                    firstName: $('#firstName').val(),
+                    email: $('#email').val(),
+                    phone: $('#phone').val(),
+                    subject: $('#subject').val(),
+                    message: $('#message').val()
+                };
+
+                // Show success message (in real app, you would send this to server)
+                alert('Cảm ơn bạn đã liên hệ với chúng tôi! Chúng tôi sẽ phản hồi trong thời gian sớm nhất.');
+                
+                // Reset form
+                this.reset();
+            });
+        });
+    </script>
+} 
