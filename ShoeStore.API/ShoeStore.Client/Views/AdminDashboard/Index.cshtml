@@ -18,17 +18,6 @@
             <label for="to" class="form-label">Đến ngày</label>
             <input type="date" class="form-control" id="to" name="to" value="@ViewBag.To" />
         </div>
-        <div class="col-auto">
-            <label for="status" class="form-label">Trạng thái đơn</label>
-            <select class="form-select" id="status" name="status">
-                @Html.Raw($"<option value=\"\"{(string.IsNullOrEmpty(ViewBag.Status)?" selected":"")}>Tất cả</option>")
-                @Html.Raw($"<option value=\"Pending\"{(ViewBag.Status=="Pending"? " selected":"")}>Pending</option>")
-                @Html.Raw($"<option value=\"Processing\"{(ViewBag.Status=="Processing"? " selected":"")}>Processing</option>")
-                @Html.Raw($"<option value=\"Shipped\"{(ViewBag.Status=="Shipped"? " selected":"")}>Shipped</option>")
-                @Html.Raw($"<option value=\"Delivered\"{(ViewBag.Status=="Delivered"? " selected":"")}>Delivered</option>")
-                @Html.Raw($"<option value=\"Cancelled\"{(ViewBag.Status=="Cancelled"? " selected":"")}>Cancelled</option>")
-            </select>
-        </div>
         <div class="col-auto align-self-end">
             <button type="submit" class="btn btn-primary">Lọc</button>
         </div>
