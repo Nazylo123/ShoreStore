@@ -12,7 +12,7 @@ namespace ShoeStore.Client.Services
         {
             _httpClient = httpClient;
             _configuration = configuration;
-            _httpClient.BaseAddress = new Uri(_configuration["ApiBaseUrl"] ?? "https://localhost:7001/api/");
+            // _httpClient.BaseAddress = new Uri(_configuration["ApiBaseUrl"] ?? "https://localhost:7001/api/");
         }
 
         public async Task<List<BrandViewModel>> GetAllBrandsAsync()

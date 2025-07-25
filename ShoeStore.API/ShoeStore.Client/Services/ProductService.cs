@@ -31,7 +31,7 @@ namespace ShoeStore.Client.Services
         {
             try
             {
-                var response = await _httpClient.GetAsync($"{_apiBaseUrl}products");
+                var response = await _httpClient.GetAsync("products");
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
@@ -50,7 +50,7 @@ namespace ShoeStore.Client.Services
         {
             try
             {
-                var response = await _httpClient.GetAsync($"{_apiBaseUrl}products/active");
+                var response = await _httpClient.GetAsync("products/active");
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
@@ -69,7 +69,7 @@ namespace ShoeStore.Client.Services
         {
             try
             {
-                var response = await _httpClient.GetAsync($"{_apiBaseUrl}products/{id}");
+                var response = await _httpClient.GetAsync($"products/{id}");
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
@@ -88,7 +88,7 @@ namespace ShoeStore.Client.Services
         {
             try
             {
-                var response = await _httpClient.GetAsync($"{_apiBaseUrl}products/category/{categoryId}");
+                var response = await _httpClient.GetAsync($"products/category/{categoryId}");
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
@@ -107,7 +107,7 @@ namespace ShoeStore.Client.Services
         {
             try
             {
-                var response = await _httpClient.GetAsync($"{_apiBaseUrl}products/brand/{brandId}");
+                var response = await _httpClient.GetAsync($"products/brand/{brandId}");
                 if (response.IsSuccessStatusCode)
                 {
                     var content = await response.Content.ReadAsStringAsync();
@@ -165,7 +165,7 @@ namespace ShoeStore.Client.Services
 
         public async Task<IEnumerable<ProductViewModel>> GetAllAsync()
         {
-            var response = await _httpClient.GetAsync($"{_configuration["ApiBaseUrl"]}products");
+            var response = await _httpClient.GetAsync("products");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<IEnumerable<ProductViewModel>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new List<ProductViewModel>();
@@ -173,7 +173,7 @@ namespace ShoeStore.Client.Services
 
         public async Task<ProductViewModel> GetByIdAsync(int id)
         {
-            var response = await _httpClient.GetAsync($"{_configuration["ApiBaseUrl"]}products/{id}");
+            var response = await _httpClient.GetAsync($"products/{id}");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<ProductViewModel>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
@@ -188,7 +188,7 @@ namespace ShoeStore.Client.Services
             }
             var json = JsonSerializer.Serialize(model);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = await _httpClient.PostAsync($"{_configuration["ApiBaseUrl"]}products", content);
+            var response = await _httpClient.PostAsync("products", content);
             response.EnsureSuccessStatusCode();
         }
 
@@ -201,7 +201,7 @@ namespace ShoeStore.Client.Services
             }
             var json = JsonSerializer.Serialize(model);
             var content = new StringContent(json, Encoding.UTF8, "application/json");
-            var response = await _httpClient.PutAsync($"{_configuration["ApiBaseUrl"]}products/{model.Id}", content);
+            var response = await _httpClient.PutAsync($"products/{model.Id}", content);
             response.EnsureSuccessStatusCode();
         }
 
@@ -212,7 +212,7 @@ namespace ShoeStore.Client.Services
             {
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             }
-            var response = await _httpClient.DeleteAsync($"{_configuration["ApiBaseUrl"]}products/{id}");
+            var response = await _httpClient.DeleteAsync($"products/{id}");
             response.EnsureSuccessStatusCode();
         }
 

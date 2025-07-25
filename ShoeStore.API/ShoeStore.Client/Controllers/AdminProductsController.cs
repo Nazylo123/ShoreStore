@@ -4,6 +4,8 @@ using ShoeStore.Client.Models;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Authorization;
+using System.Linq;
+using System;
 
 namespace ShoeStore.Client.Controllers
 {
@@ -24,8 +26,20 @@ namespace ShoeStore.Client.Controllers
 
         public async Task<IActionResult> Create()
         {
-            ViewBag.Brands = new SelectList(await _productService.GetAllBrandsAsync(), "Id", "Name");
-            ViewBag.Categories = new SelectList(await _productService.GetAllCategoriesAsync(), "Id", "Name");
+            var brands = await _productService.GetAllBrandsAsync();
+            Console.WriteLine($"[DEBUG] Brands count: {brands.Count}");
+            ViewBag.Brands = brands.Select(b => new SelectListItem
+            {
+                Value = b.Id.ToString(),
+                Text = b.Name
+            }).ToList();
+            var categories = await _productService.GetAllCategoriesAsync();
+            Console.WriteLine($"[DEBUG] Categories count: {categories.Count}");
+            ViewBag.Categories = categories.Select(c => new SelectListItem
+            {
+                Value = c.Id.ToString(),
+                Text = c.Name
+            }).ToList();
             return View();
         }
 
@@ -34,8 +48,18 @@ namespace ShoeStore.Client.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.Brands = new SelectList(await _productService.GetAllBrandsAsync(), "Id", "Name");
-                ViewBag.Categories = new SelectList(await _productService.GetAllCategoriesAsync(), "Id", "Name");
+                var brands = await _productService.GetAllBrandsAsync();
+                ViewBag.Brands = brands.Select(b => new SelectListItem
+                {
+                    Value = b.Id.ToString(),
+                    Text = b.Name
+                }).ToList();
+                var categories = await _productService.GetAllCategoriesAsync();
+                ViewBag.Categories = categories.Select(c => new SelectListItem
+                {
+                    Value = c.Id.ToString(),
+                    Text = c.Name
+                }).ToList();
                 return View(model);
             }
             await _productService.CreateAsync(model);
@@ -46,8 +70,20 @@ namespace ShoeStore.Client.Controllers
         {
             var product = await _productService.GetByIdAsync(id);
             if (product == null) return NotFound();
-            ViewBag.Brands = new SelectList(await _productService.GetAllBrandsAsync(), "Id", "Name", product.BrandId);
-            ViewBag.Categories = new SelectList(await _productService.GetAllCategoriesAsync(), "Id", "Name", product.CategoryId);
+            var brands = await _productService.GetAllBrandsAsync();
+            ViewBag.Brands = brands.Select(b => new SelectListItem
+            {
+                Value = b.Id.ToString(),
+                Text = b.Name,
+                Selected = (b.Id == product.BrandId)
+            }).ToList();
+            var categories = await _productService.GetAllCategoriesAsync();
+            ViewBag.Categories = categories.Select(c => new SelectListItem
+            {
+                Value = c.Id.ToString(),
+                Text = c.Name,
+                Selected = (c.Id == product.CategoryId)
+            }).ToList();
             return View(product);
         }
 
@@ -56,8 +92,20 @@ namespace ShoeStore.Client.Controllers
         {
             if (!ModelState.IsValid)
             {
-                ViewBag.Brands = new SelectList(await _productService.GetAllBrandsAsync(), "Id", "Name", model.BrandId);
-                ViewBag.Categories = new SelectList(await _productService.GetAllCategoriesAsync(), "Id", "Name", model.CategoryId);
+                var brands = await _productService.GetAllBrandsAsync();
+                ViewBag.Brands = brands.Select(b => new SelectListItem
+                {
+                    Value = b.Id.ToString(),
+                    Text = b.Name,
+                    Selected = (b.Id == model.BrandId)
+                }).ToList();
+                var categories = await _productService.GetAllCategoriesAsync();
+                ViewBag.Categories = categories.Select(c => new SelectListItem
+                {
+                    Value = c.Id.ToString(),
+                    Text = c.Name,
+                    Selected = (c.Id == model.CategoryId)
+                }).ToList();
                 return View(model);
             }
             await _productService.UpdateAsync(model);

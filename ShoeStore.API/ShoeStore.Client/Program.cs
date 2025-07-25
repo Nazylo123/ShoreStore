@@ -22,9 +22,25 @@ builder.Services.AddHttpContextAccessor();
 
 // Register Services
 builder.Services.AddScoped<IProductService, ProductService>();
-builder.Services.AddScoped<ICategoryService, CategoryService>();
-builder.Services.AddScoped<IBrandService, BrandService>();
+// builder.Services.AddScoped<ICategoryService, CategoryService>();
+// builder.Services.AddScoped<IBrandService, BrandService>();
 builder.Services.AddScoped<IUserService, UserService>();
+
+// Đăng ký HttpClient cho BrandService và CategoryService với BaseAddress từ cấu hình
+builder.Services.AddHttpClient<IBrandService, BrandService>(client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["ApiBaseUrl"]);
+});
+builder.Services.AddHttpClient<ICategoryService, CategoryService>(client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["ApiBaseUrl"]);
+});
+
+// Đăng ký ProductService bằng AddHttpClient và set BaseAddress từ cấu hình
+builder.Services.AddHttpClient<IProductService, ProductService>(client =>
+{
+    client.BaseAddress = new Uri(builder.Configuration["ApiBaseUrl"]);
+});
 
 // Thêm cấu hình authentication cookie
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
