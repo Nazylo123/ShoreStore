@@ -1,32 +1,6 @@
 @model ShoeStore.Client.Models.ProductViewModel
 @{
     ViewData["Title"] = "Thêm sản phẩm mới";
-    var brands = ViewBag.Brands as IEnumerable<SelectListItem>;
-    var categories = ViewBag.Categories as IEnumerable<SelectListItem>;
-}
-@if (brands == null)
-{
-    <div style="color:red">ViewBag.Brands is NULL</div>
-}
-else
-{
-    <div>Brands count: @brands.Count()</div>
-    @foreach (var b in brands)
-    {
-        <div>Brand: @b.Text - @b.Value</div>
-    }
-}
-@if (categories == null)
-{
-    <div style="color:red">ViewBag.Categories is NULL</div>
-}
-else
-{
-    <div>Categories count: @categories.Count()</div>
-    @foreach (var c in categories)
-    {
-        <div>Category: @c.Text - @c.Value</div>
-    }
 }
 <h2 class="mb-4">Thêm sản phẩm mới</h2>
 <form asp-action="Create" method="post">

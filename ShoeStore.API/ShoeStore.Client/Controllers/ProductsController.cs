@@ -20,7 +20,7 @@ namespace ShoeStore.Client.Controllers
         // GET: Products
         public async Task<IActionResult> Index(int page = 1, string? searchTerm = null, int? categoryId = null, int? brandId = null, string? sortBy = null)
         {
-            var productList = await _productService.GetProductsWithPaginationAsync(page, 12, searchTerm, categoryId, brandId, sortBy);
+            var productList = await _productService.GetProductsWithPaginationAsync(page, 6, searchTerm, categoryId, brandId, sortBy);
             
             ViewBag.Categories = await _categoryService.GetActiveCategoriesAsync();
             ViewBag.Brands = await _brandService.GetActiveBrandsAsync();
