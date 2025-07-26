@@ -18,19 +18,6 @@ namespace ShoeStore.API.Services
 
         public async Task<IEnumerable<ProductResponseDTO>> GetAllProductsAsync()
         {
-            var products = await _productRepository.GetProductsWithCategoryAndBrandAsync();
-            var dtos = _mapper.Map<IEnumerable<ProductResponseDTO>>(products).ToList();
-            // Gán tổng stock cho từng sản phẩm
-            foreach (var dto in dtos)
-            {
-                var product = products.FirstOrDefault(p => p.Id == dto.Id);
-                dto.TotalStock = product?.Variants?.Sum(v => v.Stock) ?? 0;
-            }
-            return dtos;
-        }
-
-        public async Task<IEnumerable<ProductResponseDTO>> GetAllProductsForAdminAsync()
-        {
             var products = await _productRepository.GetAllProductsWithCategoryAndBrandAsync();
             var dtos = _mapper.Map<IEnumerable<ProductResponseDTO>>(products).ToList();
             // Gán tổng stock cho từng sản phẩm
@@ -193,20 +180,8 @@ namespace ShoeStore.API.Services
             if (product == null)
                 throw new ArgumentException("Product not found");
 
-            // Soft delete - set IsActive to false instead of hard delete
-            product.IsActive = false;
-            await _productRepository.UpdateAsync(product);
-        }
-
-        public async Task RestoreProductAsync(int id)
-        {
-            var product = await _productRepository.GetByIdAsync(id);
-            if (product == null)
-                throw new ArgumentException("Product not found");
-
-            // Restore soft-deleted product
-            product.IsActive = true;
-            await _productRepository.UpdateAsync(product);
+            // Hard delete - remove from database
+            await _productRepository.DeleteAsync(product);
         }
 
         public async Task<bool> ProductExistsAsync(int id)

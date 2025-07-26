@@ -871,44 +871,8 @@
   },
   {
     "ContainingType": "ShoeStore.API.Controllers.ProductsController",
-    "Method": "RestoreProduct",
-    "RelativePath": "api/Products/{id}/restore",
-    "HttpMethod": "POST",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [
-      {
-        "Name": "id",
-        "Type": "System.Int32",
-        "IsRequired": true
-      }
-    ],
-    "ReturnTypes": []
-  },
-  {
-    "ContainingType": "ShoeStore.API.Controllers.ProductsController",
     "Method": "GetActiveProducts",
     "RelativePath": "api/Products/active",
-    "HttpMethod": "GET",
-    "IsController": true,
-    "Order": 0,
-    "Parameters": [],
-    "ReturnTypes": [
-      {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[ShoeStore.API.DTOs.ProductResponseDTO, ShoeStore.API, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
-        "MediaTypes": [
-          "text/plain",
-          "application/json",
-          "text/json"
-        ],
-        "StatusCode": 200
-      }
-    ]
-  },
-  {
-    "ContainingType": "ShoeStore.API.Controllers.ProductsController",
-    "Method": "GetProductsForAdmin",
-    "RelativePath": "api/Products/admin",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,

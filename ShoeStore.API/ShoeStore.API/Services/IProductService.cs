@@ -5,7 +5,6 @@ namespace ShoeStore.API.Services
     public interface IProductService
     {
         Task<IEnumerable<ProductResponseDTO>> GetAllProductsAsync();
-        Task<IEnumerable<ProductResponseDTO>> GetAllProductsForAdminAsync();
         Task<IEnumerable<ProductResponseDTO>> GetActiveProductsAsync();
         Task<ProductResponseDTO?> GetProductByIdAsync(int id);
         Task<ProductResponseDTO?> GetProductWithDetailsAsync(int id);
@@ -14,7 +13,6 @@ namespace ShoeStore.API.Services
         Task<ProductResponseDTO> CreateProductAsync(CreateProductDTO productDto);
         Task UpdateProductAsync(int id, UpdateProductDTO productDto);
         Task DeleteProductAsync(int id);
-        Task RestoreProductAsync(int id);
         Task<bool> ProductExistsAsync(int id);
     }
 }

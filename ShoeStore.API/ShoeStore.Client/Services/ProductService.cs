@@ -170,7 +170,7 @@ namespace ShoeStore.Client.Services
             {
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             }
-            var response = await _httpClient.GetAsync("products/admin");
+            var response = await _httpClient.GetAsync("products");
             response.EnsureSuccessStatusCode();
             var json = await response.Content.ReadAsStringAsync();
             return JsonSerializer.Deserialize<IEnumerable<ProductViewModel>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true }) ?? new List<ProductViewModel>();
@@ -218,17 +218,6 @@ namespace ShoeStore.Client.Services
                 _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
             }
             var response = await _httpClient.DeleteAsync($"products/{id}");
-            response.EnsureSuccessStatusCode();
-        }
-
-        public async Task RestoreAsync(int id)
-        {
-            var token = _httpContextAccessor.HttpContext?.Session.GetString("JwtToken");
-            if (!string.IsNullOrEmpty(token))
-            {
-                _httpClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
-            }
-            var response = await _httpClient.PostAsync($"products/{id}/restore", null);
             response.EnsureSuccessStatusCode();
         }
 

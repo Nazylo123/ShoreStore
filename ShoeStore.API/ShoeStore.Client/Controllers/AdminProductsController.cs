@@ -119,13 +119,6 @@ namespace ShoeStore.Client.Controllers
             return RedirectToAction("Index");
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Restore(int id)
-        {
-            await _productService.RestoreAsync(id);
-            return RedirectToAction("Index");
-        }
-
         public async Task<IActionResult> Details(int id)
         {
             var product = await _productService.GetByIdAsync(id);
