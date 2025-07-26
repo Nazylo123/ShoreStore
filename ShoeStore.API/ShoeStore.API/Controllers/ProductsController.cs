@@ -35,6 +35,22 @@ namespace ShoeStore.API.Controllers
             }
         }
 
+        // GET: api/Products/admin
+        [HttpGet("admin")]
+        [Authorize(Roles = "Admin")]
+        public async Task<ActionResult<IEnumerable<ProductResponseDTO>>> GetProductsForAdmin()
+        {
+            try
+            {
+                var products = await _productService.GetAllProductsForAdminAsync();
+                return Ok(products);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
         // GET: api/Products/active
         [HttpGet("active")]
         public async Task<ActionResult<IEnumerable<ProductResponseDTO>>> GetActiveProducts()
@@ -149,6 +165,26 @@ namespace ShoeStore.API.Controllers
             try
             {
                 await _productService.DeleteProductAsync(id);
+                return NoContent();
+            }
+            catch (ArgumentException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        // POST: api/Products/5/restore
+        [HttpPost("{id}/restore")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> RestoreProduct(int id)
+        {
+            try
+            {
+                await _productService.RestoreProductAsync(id);
                 return NoContent();
             }
             catch (ArgumentException ex)

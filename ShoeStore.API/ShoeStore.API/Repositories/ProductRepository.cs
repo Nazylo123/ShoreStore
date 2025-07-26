@@ -16,6 +16,16 @@ namespace ShoeStore.API.Repositories
                 .Include(p => p.Category)
                 .Include(p => p.Brand)
                 .Include(p => p.Variants)
+                .Where(p => p.IsActive)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<Product>> GetAllProductsWithCategoryAndBrandAsync()
+        {
+            return await _context.Products
+                .Include(p => p.Category)
+                .Include(p => p.Brand)
+                .Include(p => p.Variants)
                 .ToListAsync();
         }
 

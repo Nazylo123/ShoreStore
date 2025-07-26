@@ -17,6 +17,7 @@ namespace ShoeStore.Client.Services
         Task CreateAsync(ProductViewModel model);
         Task UpdateAsync(ProductViewModel model);
         Task DeleteAsync(int id);
+        Task RestoreAsync(int id);
         Task<List<BrandViewModel>> GetAllBrandsAsync();
         Task<List<CategoryViewModel>> GetAllCategoriesAsync();
     }
